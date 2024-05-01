@@ -49,7 +49,7 @@ const EmployeeTable = () => {
             <Button
               variant='light'
               onClick={() =>
-                router.push(`?page=${currentPage}&take${currentTake}`)
+                router.push(`?page=${currentPage}&take=${currentTake}`)
               }
             >
               Reset Filter
