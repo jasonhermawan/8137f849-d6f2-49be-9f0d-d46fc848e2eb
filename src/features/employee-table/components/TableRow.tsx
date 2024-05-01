@@ -45,6 +45,7 @@ const TableRow: React.FC<ITableRowProps> = ({
 }) => {
   const searchParams = useSearchParams();
   const [emailError, setEmailError] = useState<string>('');
+  const [reset, setReset] = useState<boolean>(false);
 
   const validateEmail = (email: string): boolean => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -74,9 +75,10 @@ const TableRow: React.FC<ITableRowProps> = ({
           onClick={() => {
             setEditEmployeeId(item.id);
             setEmailError('');
+            setReset(false);
           }}
         >
-          {isEditable && type !== 'create' ? (
+          {isEditable && type !== 'create' && !reset ? (
             <Input
               name='firstName'
               defaultValue={item.firstName}
@@ -92,7 +94,7 @@ const TableRow: React.FC<ITableRowProps> = ({
             setEmailError('');
           }}
         >
-          {isEditable && type !== 'create' ? (
+          {isEditable && type !== 'create' && !reset ? (
             <Input
               name='lastName'
               defaultValue={item.lastName}
@@ -108,7 +110,7 @@ const TableRow: React.FC<ITableRowProps> = ({
             setEmailError('');
           }}
         >
-          {isEditable && type !== 'create' ? (
+          {isEditable && type !== 'create' && !reset ? (
             <Input
               name='position'
               defaultValue={item.position}
@@ -124,7 +126,7 @@ const TableRow: React.FC<ITableRowProps> = ({
             setEmailError('');
           }}
         >
-          {isEditable && type !== 'create' ? (
+          {isEditable && type !== 'create' && !reset ? (
             <Input
               name='phone'
               defaultValue={item.phone}
@@ -140,7 +142,7 @@ const TableRow: React.FC<ITableRowProps> = ({
             setEmailError('');
           }}
         >
-          {isEditable && type !== 'create' ? (
+          {isEditable && type !== 'create' && !reset ? (
             <Input
               name='email'
               defaultValue={item.email}
@@ -152,7 +154,7 @@ const TableRow: React.FC<ITableRowProps> = ({
           )}
         </MantineTable.Td>
         <MantineTable.Td>
-          {isEditable && type !== 'create' ? (
+          {isEditable && type !== 'create' && !reset ? (
             <Flex gap='25px' justify='center'>
               {!emailError ? (
                 <Tooltip label='Save'>
@@ -161,6 +163,7 @@ const TableRow: React.FC<ITableRowProps> = ({
                     onClick={() => {
                       setEditEmployeeId(item.id);
                       onUpdateEmployee();
+                      setReset(true);
                     }}
                   >
                     <FaSave size='18px' style={{ cursor: 'pointer' }} />

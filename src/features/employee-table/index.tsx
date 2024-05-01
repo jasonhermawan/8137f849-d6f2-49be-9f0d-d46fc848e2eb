@@ -13,11 +13,14 @@ const EmployeeTable = () => {
   const currentSortBy = searchParams.get('sortBy') || '';
   const currentSortOrder = searchParams.get('sortOrder') || '';
   const [tableType, setTableType] = useState<'create' | ''>('');
+  const [reset, setReset] = useState<boolean>(false);
   const { data: employees } = useGetEmployeesQuery({
     page: currentPage,
     ITEM_PER_PAGE: currentTake,
-    ...(currentSortBy ? { sortBy: currentSortBy } : {}),
-    ...(currentSortOrder ? { sortOrder: currentSortOrder } : {}),
+    ...(currentSortBy ? { sortBy: currentSortBy } : { sortBy: 'createdAt' }),
+    ...(currentSortOrder
+      ? { sortOrder: currentSortOrder }
+      : { sortOrder: 'desc' }),
   });
 
   const handlePagination = (page: string, take: string | null) => {
@@ -35,7 +38,12 @@ const EmployeeTable = () => {
           <Button onClick={() => setTableType('')}>Cancel Creation</Button>
         ) : (
           <Flex gap='10px'>
-            <Button onClick={() => setTableType('create')}>
+            <Button
+              onClick={() => {
+                setTableType('create');
+                setReset(false);
+              }}
+            >
               Create Employee
             </Button>
             <Button
@@ -49,7 +57,13 @@ const EmployeeTable = () => {
           </Flex>
         )}
       </Flex>
-      <Table employees={employees.data} type={tableType} />
+      <Table
+        employees={employees.data}
+        type={tableType}
+        reset={reset}
+        setReset={setReset}
+        setTableType={setTableType}
+      />
       <Flex mt='20px' justify='space-between'>
         <Select
           defaultValue='5'

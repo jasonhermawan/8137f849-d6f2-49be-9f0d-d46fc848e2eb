@@ -1,4 +1,8 @@
-import { UseMutationOptions, useMutation } from '@tanstack/react-query';
+import {
+  UseMutationOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { ICreateEmployee, IEmployee } from '../types';
 import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
@@ -6,6 +10,7 @@ import { toast } from 'react-toastify';
 export const useCreateEmployeeMutation = (
   options?: UseMutationOptions<IEmployee, AxiosError<any>, ICreateEmployee>,
 ) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (payload: ICreateEmployee): Promise<IEmployee> => {
       return await axios.post(
@@ -15,7 +20,7 @@ export const useCreateEmployeeMutation = (
     },
     ...options,
     onSuccess: () => {
-      window.location.reload();
+      queryClient.invalidateQueries({ queryKey: ['employees'] });
       toast.success(`Employee successfuly created`);
     },
     onError: (e: AxiosError<any>) => {

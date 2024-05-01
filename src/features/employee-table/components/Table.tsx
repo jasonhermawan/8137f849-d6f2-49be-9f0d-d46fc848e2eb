@@ -15,9 +15,18 @@ import { IEmployee } from '../types';
 interface IEmployeeTableProps {
   employees: IEmployee[];
   type?: 'create' | '';
+  reset: boolean;
+  setReset: React.Dispatch<React.SetStateAction<boolean>>;
+  setTableType: React.Dispatch<React.SetStateAction<'' | 'create'>>;
 }
 
-const Table: React.FC<IEmployeeTableProps> = ({ employees, type }) => {
+const Table: React.FC<IEmployeeTableProps> = ({
+  employees,
+  type,
+  reset,
+  setReset,
+  setTableType,
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentPage = searchParams.get('page') || '1';
@@ -106,7 +115,7 @@ const Table: React.FC<IEmployeeTableProps> = ({ employees, type }) => {
         </MantineTable.Tr>
       </MantineTable.Thead>
       <MantineTable.Tbody>
-        {type === 'create' ? (
+        {type === 'create' && !reset ? (
           <Formik
             initialValues={initialValues}
             validationSchema={CreateEmployeeSchema}
@@ -114,6 +123,8 @@ const Table: React.FC<IEmployeeTableProps> = ({ employees, type }) => {
               createEmployee({ ...values });
               resetForm();
               setSubmitting(false);
+              setReset(true);
+              setTableType('');
             }}
           >
             <CreateEmployeeFormRow />
