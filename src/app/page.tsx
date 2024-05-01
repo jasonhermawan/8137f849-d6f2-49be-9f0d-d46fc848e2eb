@@ -1,12 +1,12 @@
-import { Center, Text } from '@mantine/core';
-import React from 'react';
+'use client';
+import { redirect } from 'next/navigation';
+import React, { useEffect } from 'react';
 
-const Home = () => {
-  return (
-    <Center maw='100vw' h='100vh'>
-      <Text>Table</Text>
-    </Center>
-  );
+const HomePage = () => {
+  useEffect(() => {
+    redirect('/table');
+  }, []);
+  return <></>;
 };
 
-export default Home;
+export default HomePage;
